@@ -25,7 +25,7 @@ public class SubActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         //ListView lvCocktail = findViewById(R.id.lvCocktail);
         //Button btnSave = findViewById(R.id.btnSave);

@@ -5,6 +5,7 @@ import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,4 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onAddTaskButton(View view) {
+        Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+        startActivity(intent);
+    }
 }
