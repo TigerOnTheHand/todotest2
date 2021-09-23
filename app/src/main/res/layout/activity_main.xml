@@ -6,62 +6,63 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btnEdit"
+        android:id="@+id/btnGoToEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="651dp"
+        android:layout_marginTop="580dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:text="編集"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnDelete"
+        app:layout_constraintEnd_toStartOf="@+id/btnGoToDelete"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnDelete"
+        android:id="@+id/btnGoToDelete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="651dp"
+        android:layout_marginTop="580dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:text="削除"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnAddTask"
-        app:layout_constraintStart_toEndOf="@+id/btnEdit"
+        app:layout_constraintEnd_toStartOf="@+id/btnGoToAddTask"
+        app:layout_constraintStart_toEndOf="@+id/btnGoToEdit"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnAddTask"
+        android:id="@+id/btnGoToAddTask"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="651dp"
+        android:layout_marginTop="580dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
+        android:onClick="onAddTaskButton"
         android:text="追加"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnDelete"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="onAddTaskButton" />
+        app:layout_constraintStart_toEndOf="@+id/btnGoToDelete"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="380dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="30dp"
         android:text="これはテスト文章です。"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnEdit"
+        app:layout_constraintBottom_toTopOf="@+id/btnGoToEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Todoアプリテスト</string>
+    <string name="btnBackToMenu">メニューに戻る</string>
+    <string name="btnAddTask">課題を追加</string>
 </resources>

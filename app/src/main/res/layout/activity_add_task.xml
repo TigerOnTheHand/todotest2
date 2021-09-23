@@ -14,7 +14,7 @@
         android:layout_marginTop="664dp"
         android:layout_marginEnd="287dp"
         android:layout_marginBottom="19dp"
-        android:text="メニューに戻る"
+        android:text="@string/btnBackToMenu"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,4 +23,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         android:onClick="onBackToMenuButton" />
+
+    <Button
+        android:id="@+id/btnAddTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="528dp"
+        android:text="@string/btnAddTask"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

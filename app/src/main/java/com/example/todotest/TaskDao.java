@@ -13,4 +13,8 @@ public interface TaskDao {
 
     @Query("DELETE FROM tasks WHERE id = :id")
     void delete(int id);
+
+    // 問題
+    // 主キーがないとidを指定してtaskを取り出せない
+    // なのでtask追加時に主キーを「課題の数 + 1」と設定する必要がある
 }
