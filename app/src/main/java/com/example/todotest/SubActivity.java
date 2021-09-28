@@ -118,7 +118,7 @@ public class SubActivity extends AppCompatActivity {
             */
             //Log.d("a", note);
 
-            //SelectPostExector selectPostExector = new SelectPostExector(taskDao.note);
+            //SelectPostExector selectPostExector = new SelectPostExector(task.note);
             //_handler.post(selectPostExector);
         }
     }
@@ -165,7 +165,7 @@ public class SubActivity extends AppCompatActivity {
         public void run() {
             // データを削除して更新
             _taskDao.delete(_taskId);
-            _taskDao.insert(_taskId, _taskName, note);
+            //_taskDao.insert(new Task(_taskName, note));
 
             UpdatePostExector updatePostExector = new UpdatePostExector();
             _handler.post(updatePostExector);

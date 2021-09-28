@@ -2,4 +2,7 @@
     <string name="app_name">Todoアプリテスト</string>
     <string name="btnBackToMenu">メニューに戻る</string>
     <string name="btnAddTask">課題を追加</string>
+    <string name="btnChangeDate">変更</string>
+    <string name="txtDate">期限：2021/09/28</string>
+    <string name="hint">課題名を入力</string>
 </resources>
