@@ -22,11 +22,15 @@ public class Task {
     @ColumnInfo(name = "dayOfMonth")
     public int dayOfMonth;
 
-    public Task(String name, String note, int year, int monthOfYear, int dayOfMonth) {
+    @ColumnInfo(name = "blockSize")
+    public int blockSize;
+
+    public Task(String name, String note, int year, int monthOfYear, int dayOfMonth, int blockSize) {
         this.name = name;
         this.note = note;
         this.year = year;
         this.monthOfYear = monthOfYear;
         this.dayOfMonth = dayOfMonth;
+        this.blockSize = blockSize;
     }
 }

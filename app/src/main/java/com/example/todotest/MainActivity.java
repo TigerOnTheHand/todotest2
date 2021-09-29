@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             tasks = taskDao.getAll();
 
 
+
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
             _handler.post(showBlockPostExector);
         }

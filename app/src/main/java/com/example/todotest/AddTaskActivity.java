@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 public class AddTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     Task task;
     TextView txtDate;
-    EditText editTaskName;
+    EditText editTaskName, editTaskNote, editTaskBlockSize;
     int year, monthOfYear, dayOfMonth;
 
     @Override
@@ -34,10 +34,12 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         setContentView(R.layout.activity_add_task);
 
         Intent intent = getIntent();
-        task = new Task("default", "default", 0000, 00, 00);
+        task = new Task("default", "default", 0000, 00, 00, 0);
 
         txtDate = findViewById(R.id.txtDate);
         editTaskName = findViewById(R.id.editTaskName);
+        editTaskNote = findViewById(R.id.editTaskNote);
+        editTaskBlockSize = findViewById(R.id.editTaskBlockSize);
 
         //今日の日付を取得(日本のタイムゾーン)
         Calendar todayDateCalendar =
@@ -85,9 +87,11 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         @Override
         public void run() {
             task.name = editTaskName.getText().toString();
+            task.note = editTaskNote.getText().toString();
             task.year = year;
             task.monthOfYear = monthOfYear;
             task.dayOfMonth = dayOfMonth;
+            task.blockSize = Integer.parseInt(editTaskBlockSize.getText().toString());
 
             // データを追加
             _taskDao.insert(task);

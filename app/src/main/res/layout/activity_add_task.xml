@@ -39,6 +39,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/txtTaskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="101dp"
+        android:text="@string/txtTaskName"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toStartOf="@+id/editTaskName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTaskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/hint"
+        android:ems="10"
+        android:hint="@string/hint"
+        android:inputType="text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtTaskName"
+        app:layout_constraintTop_toTopOf="@+id/txtTaskName" />
+
+    <TextView
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,27 +88,54 @@
         app:layout_constraintTop_toTopOf="@+id/txtDate" />
 
     <TextView
-        android:id="@+id/txtTaskName"
+        android:id="@+id/txtTaskNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/txtTaskNote"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toStartOf="@+id/editTaskNote"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+    <EditText
+        android:id="@+id/editTaskNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="true"
+        android:ems="8"
+        android:hint="@string/editTaskNote"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="3"
+        android:minLines="3"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtTaskNote"
+        app:layout_constraintTop_toTopOf="@+id/txtTaskNote" />
+
+    <TextView
+        android:id="@+id/txtTaskBlockSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="101dp"
-        android:text="課題名"
+        android:layout_marginTop="90dp"
+        android:text="@string/txtTaskBlockSize"
         android:textSize="34sp"
-        app:layout_constraintEnd_toStartOf="@+id/editTaskName"
+        app:layout_constraintEnd_toStartOf="@+id/editTaskBlockSize"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTaskNote" />
 
     <EditText
-        android:id="@+id/editTaskName"
+        android:id="@+id/editTaskBlockSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/hint"
-        android:autofillHints="@string/hint"
-        android:inputType="text"
+        android:ems="3"
+        android:inputType="number"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txtTaskName"
-        app:layout_constraintTop_toTopOf="@+id/txtTaskName" />
+        app:layout_constraintStart_toEndOf="@+id/txtTaskBlockSize"
+        app:layout_constraintTop_toTopOf="@+id/txtTaskBlockSize" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
