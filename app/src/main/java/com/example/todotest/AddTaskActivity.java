@@ -34,7 +34,7 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         setContentView(R.layout.activity_add_task);
 
         Intent intent = getIntent();
-        task = new Task("default", "default", 0000, 00, 00, 0);
+        task = new Task("default", "default", 9999, 12, 31, 2);
 
         txtDate = findViewById(R.id.txtDate);
         editTaskName = findViewById(R.id.editTaskName);

@@ -62,6 +62,7 @@
         android:layout_marginBottom="30dp"
         android:text="これはテスト文章です。"
         android:textSize="24sp"
+        android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/btnGoToEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

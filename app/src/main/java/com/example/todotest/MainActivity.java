@@ -1,5 +1,7 @@
 package com.example.todotest;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
         AppDatabase db = AppDatabaseSingleton.getInstance(getApplicationContext());
         taskDao = db.taskDao();
+        tasks = new ArrayList<Task>();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         // ブロック表示
         AsyncShowBlock();
@@ -62,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
             tasks.clear();
             tasks = taskDao.getAll();
 
-
+            // tasksを期日が近い順に並べ替え
+            tasks = SortInOrderOfDate(tasks);
 
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
             _handler.post(showBlockPostExector);
@@ -77,12 +91,58 @@ public class MainActivity extends AppCompatActivity {
         @UiThread
         @Override
         public void run() {
-
+            TextView text = findViewById(R.id.textView);
+            String str = "";
+            for (Task task : tasks) {
+                str += task.name + ",";
+            }
+            text.setText(str);
         }
     }
 
     public void GoToAddTask(View view) {
         Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
         startActivity(intent);
+    }
+
+    // tasksを期日が近い順に並べ替え
+    public List<Task> SortInOrderOfDate(List<Task> tasks) {
+        boolean isSorted = false;
+        while (!isSorted) {
+            boolean isChangedOrder = false;
+            for(int i = 0;i < tasks.size() - 1;i++) {
+                // 年を見て入れ替え
+                if (tasks.get(i).year > tasks.get(i + 1).year) {
+                    Task w = tasks.get(i);
+                    tasks.set(i, tasks.get(i + 1));
+                    tasks.set(i + 1, w);
+                    isChangedOrder = true;
+                }
+                else if(tasks.get(i).year == tasks.get(i + 1).year) {
+                    // 年が同じ→月を見て入れ替え
+                    if (tasks.get(i).monthOfYear > tasks.get(i + 1).monthOfYear) {
+                        Task w = tasks.get(i);
+                        tasks.set(i, tasks.get(i + 1));
+                        tasks.set(i + 1, w);
+                        isChangedOrder = true;
+                    }
+                }
+                else if(tasks.get(i).monthOfYear == tasks.get(i + 1).monthOfYear) {
+                    // 月が同じ→日を見て入れ替え
+                    if (tasks.get(i).dayOfMonth > tasks.get(i + 1).dayOfMonth) {
+                        Task w = tasks.get(i);
+                        tasks.set(i, tasks.get(i + 1));
+                        tasks.set(i + 1, w);
+                        isChangedOrder = true;
+                    }
+                }
+            }
+
+            if (!isChangedOrder) {
+                isSorted = true;
+            }
+        }
+
+        return tasks;
     }
 }
