@@ -1,7 +1,5 @@
 package com.example.todotest;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,22 +10,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     List<Task> tasks;
     TaskDao taskDao;
+    int taskBlock_tate = 6,taskBlock_yoko = 6;
+    int[][] taskBlockIDs = new int[taskBlock_tate + 10][taskBlock_yoko];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
             // tasksを期日が近い順に並べ替え
             tasks = SortInOrderOfDate(tasks);
 
+            // tasks内のtaskをブロック状に積み上げる
+            PileTaskID(tasks);
+
+            // 文字列からリソースIDを取得
+            // https://qiita.com/t-kashima/items/9462af782fb5f1a2a7da
+
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
             _handler.post(showBlockPostExector);
         }
@@ -93,9 +94,17 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             TextView text = findViewById(R.id.textView);
             String str = "";
+            /*
             for (Task task : tasks) {
                 str += task.name + ",";
             }
+            */
+            for (int i = 0; i < taskBlock_tate; i++) {
+                for (int j = 0; j < taskBlock_yoko; j++) {
+                    str += taskBlockIDs[i][j] + ",";
+                }
+            }
+
             text.setText(str);
         }
     }
@@ -106,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // tasksを期日が近い順に並べ替え
-    public List<Task> SortInOrderOfDate(List<Task> tasks) {
+    private List<Task> SortInOrderOfDate(List<Task> tasks) {
         boolean isSorted = false;
         while (!isSorted) {
             boolean isChangedOrder = false;
@@ -144,5 +153,79 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return tasks;
+    }
+
+    private void PileTaskID(List<Task> tasks) {
+        Arrays.fill(taskBlockIDs, 0);
+
+        int block_x = 0; // ブロック落下毎にサイズ分増加
+        // 終わったらbreakで抜ける
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+
+            // ブロックが入らない→xを右に詰める
+            if (block_x + task.blockSize > taskBlock_yoko - 1) {
+                block_x = 0;
+                // それでも入らないなら終了！
+                if (block_x + task.blockSize > taskBlock_yoko - 1) {
+                    break;
+                }
+            }
+
+            // 仮のタスクブロックを作成（あとからここにブロック削る処理？）
+            int[][] taskBlock = new int[task.blockSize][task.blockSize];
+            Arrays.fill(taskBlock, 1);
+
+            // しょっぱなから置けねえならもうなんも置けねえ→終了！
+            if (!GetCanPutBlock(taskBlock, block_x, 0)) {
+                break;
+            }
+
+            // 上から置けるかどうか見ていく
+            int block_y = 0;
+            for (block_y = 0; true; block_y++) {
+                if (!GetCanPutBlock(taskBlock, block_x, 0)) {
+                    break;
+                }
+            }
+
+            // 一個上なら置けるよね！
+            block_y -= 1;
+            PutBlock(taskBlock, block_x, block_y, task.id);
+
+
+            block_x += task.blockSize;
+        }
+    }
+
+    // ブロックがそこに置けるかどうか調べる
+    private boolean GetCanPutBlock(int[][] taskBlock, int offset_x, int offset_y) {
+
+        for(int y = 0; y < taskBlock.length; y++) {
+            for(int x = 0; x < taskBlock.length; x++) {
+                if (taskBlock[y][x] == 1) {
+                    // ブロックがリスト外→アウト
+                    if (offset_x + x > taskBlock_yoko - 1 || offset_y + y > taskBlock_tate - 1) {
+                        return false;
+                    }
+                    // ブロックがかぶってる→アウト
+                    if (taskBlockIDs[offset_y + y][offset_x + x] != 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private void PutBlock(int[][] taskBlock, int offset_x, int offset_y, int taskID) {
+        for(int y = 0; y < taskBlock.length; y++) {
+            for(int x = 0; x < taskBlock.length; x++) {
+                if (taskBlock[y][x] == 1) {
+                    taskBlockIDs[offset_y + y][offset_x + x] = taskID;
+                }
+            }
+        }
     }
 }
