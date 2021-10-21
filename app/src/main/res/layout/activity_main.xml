@@ -356,43 +356,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/ic_launcher_foreground" />
 
             <ImageButton
                 android:id="@+id/imageButton32"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/ic_launcher_foreground" />
 
             <ImageButton
                 android:id="@+id/imageButton33"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/ic_launcher_foreground" />
 
             <ImageButton
                 android:id="@+id/imageButton34"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="invisible"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/ic_launcher_foreground" />
 
             <ImageButton
                 android:id="@+id/imageButton35"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/ic_launcher_foreground" />
 
             <ImageButton
                 android:id="@+id/imageButton36"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/ic_launcher_foreground" />
+
         </LinearLayout>
 
     </LinearLayout>

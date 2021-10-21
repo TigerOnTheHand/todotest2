@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +23,7 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     List<Task> tasks;
     TaskDao taskDao;
-    int taskBlock_tate = 6,taskBlock_yoko = 6;
+    int taskBlock_tate = 15,taskBlock_yoko = 10;
     int[][] taskBlockIDs = new int[taskBlock_tate + 10][taskBlock_yoko];
 
     @Override
@@ -33,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         AppDatabase db = AppDatabaseSingleton.getInstance(getApplicationContext());
         taskDao = db.taskDao();
         tasks = new ArrayList<Task>();
-
+        TextView textView = findViewById(R.id.textView);
+        textView.setMovementMethod(new ScrollingMovementMethod());
     }
 
     @Override
@@ -94,15 +97,18 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             TextView text = findViewById(R.id.textView);
             String str = "";
-            /*
+
             for (Task task : tasks) {
                 str += task.name + ",";
             }
-            */
+
+            str += "\n";
+
             for (int i = 0; i < taskBlock_tate; i++) {
                 for (int j = 0; j < taskBlock_yoko; j++) {
                     str += taskBlockIDs[i][j] + ",";
                 }
+                str += "\n";
             }
 
             text.setText(str);
@@ -155,26 +161,38 @@ public class MainActivity extends AppCompatActivity {
         return tasks;
     }
 
+    @WorkerThread
     private void PileTaskID(List<Task> tasks) {
-        Arrays.fill(taskBlockIDs, 0);
+        for (int j = 0; j < taskBlockIDs.length; j++) {
+            for (int k = 0; k < taskBlockIDs[j].length; k++) {
+                taskBlockIDs[j][k] = 0;
+            }
+        }
 
         int block_x = 0; // ブロック落下毎にサイズ分増加
         // 終わったらbreakで抜ける
         for (int i = 0; i < tasks.size(); i++) {
+
             Task task = tasks.get(i);
 
             // ブロックが入らない→xを右に詰める
-            if (block_x + task.blockSize > taskBlock_yoko - 1) {
+            if (block_x + (task.blockSize - 1) > taskBlock_yoko) {
                 block_x = 0;
                 // それでも入らないなら終了！
-                if (block_x + task.blockSize > taskBlock_yoko - 1) {
+                if (block_x + (task.blockSize - 1) > taskBlock_yoko) {
                     break;
                 }
             }
 
-            // 仮のタスクブロックを作成（あとからここにブロック削る処理？）
+            // 仮のタスクブロックを作成
             int[][] taskBlock = new int[task.blockSize][task.blockSize];
-            Arrays.fill(taskBlock, 1);
+            for (int j = 0; j < taskBlock.length; j++) {
+                for (int k = 0; k < taskBlock[j].length; k++) {
+                    taskBlock[j][k] = 1;
+                }
+            }
+
+            // （あとからここにブロック削る処理？）
 
             // しょっぱなから置けねえならもうなんも置けねえ→終了！
             if (!GetCanPutBlock(taskBlock, block_x, 0)) {
@@ -184,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             // 上から置けるかどうか見ていく
             int block_y = 0;
             for (block_y = 0; true; block_y++) {
-                if (!GetCanPutBlock(taskBlock, block_x, 0)) {
+                if (!GetCanPutBlock(taskBlock, block_x, block_y)) {
                     break;
                 }
             }
@@ -199,8 +217,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ブロックがそこに置けるかどうか調べる
+    @WorkerThread
     private boolean GetCanPutBlock(int[][] taskBlock, int offset_x, int offset_y) {
-
         for(int y = 0; y < taskBlock.length; y++) {
             for(int x = 0; x < taskBlock.length; x++) {
                 if (taskBlock[y][x] == 1) {
@@ -219,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @WorkerThread
     private void PutBlock(int[][] taskBlock, int offset_x, int offset_y, int taskID) {
         for(int y = 0; y < taskBlock.length; y++) {
             for(int x = 0; x < taskBlock.length; x++) {
