@@ -23,8 +23,10 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     List<Task> tasks;
     TaskDao taskDao;
-    int taskBlock_tate = 15,taskBlock_yoko = 10;
+    int taskBlock_tate = 15,taskBlock_yoko = 7;
+    int actualTaskBlock_tate = 8;
     int[][] taskBlockIDs = new int[taskBlock_tate + 10][taskBlock_yoko];
+    int currentSelectedTaskID = -1; // 現在選択されているタスクのID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
             // 文字列からリソースIDを取得
             // https://qiita.com/t-kashima/items/9462af782fb5f1a2a7da
+            // タイルに反映
+            UpdateTile();
 
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
             _handler.post(showBlockPostExector);
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             TextView text = findViewById(R.id.textView);
+            /*
             String str = "";
 
             for (Task task : tasks) {
@@ -112,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             text.setText(str);
+
+             */
         }
     }
 
@@ -126,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         while (!isSorted) {
             boolean isChangedOrder = false;
             for(int i = 0;i < tasks.size() - 1;i++) {
+
                 // 年を見て入れ替え
                 if (tasks.get(i).year > tasks.get(i + 1).year) {
                     Task w = tasks.get(i);
@@ -133,22 +141,26 @@ public class MainActivity extends AppCompatActivity {
                     tasks.set(i + 1, w);
                     isChangedOrder = true;
                 }
-                else if(tasks.get(i).year == tasks.get(i + 1).year) {
-                    // 年が同じ→月を見て入れ替え
-                    if (tasks.get(i).monthOfYear > tasks.get(i + 1).monthOfYear) {
-                        Task w = tasks.get(i);
-                        tasks.set(i, tasks.get(i + 1));
-                        tasks.set(i + 1, w);
-                        isChangedOrder = true;
-                    }
-                }
-                else if(tasks.get(i).monthOfYear == tasks.get(i + 1).monthOfYear) {
-                    // 月が同じ→日を見て入れ替え
-                    if (tasks.get(i).dayOfMonth > tasks.get(i + 1).dayOfMonth) {
-                        Task w = tasks.get(i);
-                        tasks.set(i, tasks.get(i + 1));
-                        tasks.set(i + 1, w);
-                        isChangedOrder = true;
+                else {
+                    if(tasks.get(i).year == tasks.get(i + 1).year) {
+                        // 年が同じ→月を見て入れ替え
+                        if (tasks.get(i).monthOfYear > tasks.get(i + 1).monthOfYear) {
+                            Task w = tasks.get(i);
+                            tasks.set(i, tasks.get(i + 1));
+                            tasks.set(i + 1, w);
+                            isChangedOrder = true;
+                        }
+                        else {
+                            if(tasks.get(i).monthOfYear == tasks.get(i + 1).monthOfYear) {
+                                // 月が同じ→日を見て入れ替え
+                                if (tasks.get(i).dayOfMonth > tasks.get(i + 1).dayOfMonth) {
+                                    Task w = tasks.get(i);
+                                    tasks.set(i, tasks.get(i + 1));
+                                    tasks.set(i + 1, w);
+                                    isChangedOrder = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -246,5 +258,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    // タイルが押されたとき
+    public void OnTileSelected(View view) {
+        String idStr = getResources().getResourceEntryName(view.getId());
+        int tileNum = Integer.parseInt(idStr.substring(idStr.length() - 2)) - 1;
+
+        int x = tileNum % taskBlock_yoko;
+        int y = ((taskBlock_tate - actualTaskBlock_tate) - 1) + (int)Math.floor((tileNum + 1) / taskBlock_yoko);
+        currentSelectedTaskID = taskBlockIDs[x][y];
+    }
+
+    private void UpdateTile() {
+
     }
 }
