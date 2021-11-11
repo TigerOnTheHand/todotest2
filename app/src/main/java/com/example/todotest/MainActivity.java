@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,8 +24,9 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     List<Task> tasks;
     TaskDao taskDao;
-    int taskBlock_tate = 15,taskBlock_yoko = 10;
-    int[][] taskBlockIDs = new int[taskBlock_tate + 10][taskBlock_yoko];
+    int taskBlock_tate = 6,taskBlock_yoko = 6;
+    int addtate = 10;
+    int[][] taskBlockIDs = new int[taskBlock_tate + addtate][taskBlock_yoko];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
             // tasks内のtaskをブロック状に積み上げる
             PileTaskID(tasks);
 
-            // 文字列からリソースIDを取得
-            // https://qiita.com/t-kashima/items/9462af782fb5f1a2a7da
+            // ボタンの表示・非表示、色の指定
+            UpdateButton();
 
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
             _handler.post(showBlockPostExector);
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 0; i < taskBlock_tate; i++) {
                 for (int j = 0; j < taskBlock_yoko; j++) {
-                    str += taskBlockIDs[i][j] + ",";
+                    str += taskBlockIDs[i + addtate][j] + ",";
                 }
                 str += "\n";
             }
@@ -163,9 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
     @WorkerThread
     private void PileTaskID(List<Task> tasks) {
+        // 初期化
         for (int j = 0; j < taskBlockIDs.length; j++) {
             for (int k = 0; k < taskBlockIDs[j].length; k++) {
-                taskBlockIDs[j][k] = 0;
+                taskBlockIDs[j][k] = -1;
             }
         }
 
@@ -223,11 +226,11 @@ public class MainActivity extends AppCompatActivity {
             for(int x = 0; x < taskBlock.length; x++) {
                 if (taskBlock[y][x] == 1) {
                     // ブロックがリスト外→アウト
-                    if (offset_x + x > taskBlock_yoko - 1 || offset_y + y > taskBlock_tate - 1) {
+                    if (offset_x + x > taskBlock_yoko - 1 || offset_y + y > taskBlock_tate + addtate - 1) {
                         return false;
                     }
                     // ブロックがかぶってる→アウト
-                    if (taskBlockIDs[offset_y + y][offset_x + x] != 0) {
+                    if (taskBlockIDs[offset_y + y][offset_x + x] != -1) {
                         return false;
                     }
                 }
@@ -246,5 +249,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    // ボタンの表示・非表示、色の指定
+    @WorkerThread
+    private void UpdateButton() {
+        for (int i = 0; i < taskBlock_tate; i++) {
+            for (int j = 0; j < taskBlock_yoko; j++) {
+                // 文字列からリソースIDを取得
+                String num = String.valueOf(i * taskBlock_yoko + j + 1);
+                if (num.length() < 2) {
+                    num = "0" + num;
+                }
+                int btnId = getResources().getIdentifier("imageButton" + num, "id", getPackageName());
+                ImageButton btn = (ImageButton)findViewById(btnId);
+
+                // taskIDの取得
+                int id = taskBlockIDs[addtate + i][j];
+                // ボタンの表示・非表示
+                if (id == -1) {
+                    btn.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    btn.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    public void OnTaskBlock(View view) {
+        String btnName = getResources().getResourceEntryName(view.getId());
+        int id = Integer.getInteger(btnName.substring(btnName.length() - 2));
+        int taskId = taskBlockIDs[(int)Math.floor(id / taskBlock_yoko)][(int)id % taskBlock_yoko];
+        Task task = taskDao.findById(taskId);
+        TextView text = findViewById(R.id.textView);
+        text.setText(task.note);
     }
 }
