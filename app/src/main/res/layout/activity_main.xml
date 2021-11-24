@@ -89,6 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -96,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -103,6 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -110,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -117,6 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -124,6 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -131,6 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
         </LinearLayout>
@@ -143,31 +150,11 @@
             android:translationX="50dp">
 
             <ImageButton
-                android:id="@+id/imageButton11"
+                android:id="@+id/imageButton08"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton13"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton10"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton12"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -175,13 +162,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
-                android:id="@+id/imageButton08"
+                android:id="@+id/imageButton10"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton11"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton12"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton13"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -189,6 +202,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
         </LinearLayout>
 
@@ -196,14 +210,16 @@
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:onClick="OnTaskBlock"
             android:orientation="horizontal"
             android:translationX="50dp">
 
             <ImageButton
-                android:id="@+id/imageButton19"
+                android:id="@+id/imageButton15"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -211,20 +227,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton20"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton15"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -232,6 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -239,6 +243,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton19"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton20"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -246,6 +267,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
         </LinearLayout>
 
@@ -253,14 +275,16 @@
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:onClick="OnTaskBlock"
             android:orientation="horizontal"
             android:translationX="50dp">
 
             <ImageButton
-                android:id="@+id/imageButton27"
+                android:id="@+id/imageButton22"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -268,6 +292,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -275,27 +300,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton26"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton28"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton22"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -303,35 +308,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton26"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton27"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton28"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:onClick="OnTaskBlock"
             android:orientation="horizontal"
             android:translationX="50dp">
 
             <ImageButton
-                android:id="@+id/imageButton35"
+                android:id="@+id/imageButton29"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton34"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton32"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -339,13 +358,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton33"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -353,28 +366,65 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
-                android:id="@+id/imageButton29"
+                android:id="@+id/imageButton33"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton32"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton34"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton35"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:onClick="OnTaskBlock"
             android:orientation="horizontal"
             android:translationX="50dp">
+
+            <ImageButton
+                android:id="@+id/imageButton36"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
                 android:id="@+id/imageButton37"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -382,6 +432,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -389,6 +440,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -396,20 +448,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton42"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton36"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -417,21 +456,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton42"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:onClick="OnTaskBlock"
             android:orientation="horizontal"
             android:translationX="50dp">
 
             <ImageButton
-                android:id="@+id/imageButton45"
+                android:id="@+id/imageButton43"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -439,6 +490,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton45"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -446,27 +506,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton48"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton43"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton49"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -474,13 +514,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton48"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton49"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:onClick="OnTaskBlock"
             android:orientation="horizontal"
             android:translationX="50dp">
 
@@ -489,41 +548,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton53"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton54"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton55"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton56"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/imageButton52"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
@@ -531,7 +556,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="OnTaskBlock"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton52"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton53"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton54"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton55"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/imageButton56"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="OnTaskBlock"
+                tools:srcCompat="@tools:sample/avatars" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     List<Task> tasks;
     TaskDao taskDao;
-    int taskBlock_tate = 6,taskBlock_yoko = 6;
+    int taskBlock_tate = 8,taskBlock_yoko = 7;
     int addtate = 10;
     int[][] taskBlockIDs = new int[taskBlock_tate + addtate][taskBlock_yoko];
 
@@ -268,10 +268,12 @@ public class MainActivity extends AppCompatActivity {
                 int id = taskBlockIDs[addtate + i][j];
                 // ボタンの表示・非表示
                 if (id == -1) {
-                    btn.setVisibility(View.INVISIBLE);
+                    //btn.setVisibility(View.INVISIBLE);
+                    btn.setEnabled(false);
                 }
                 else {
-                    btn.setVisibility(View.VISIBLE);
+                    //btn.setVisibility(View.VISIBLE);
+                    btn.setEnabled(true);
                 }
             }
         }
@@ -279,10 +281,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void OnTaskBlock(View view) {
         String btnName = getResources().getResourceEntryName(view.getId());
+
         int id = Integer.getInteger(btnName.substring(btnName.length() - 2));
         int taskId = taskBlockIDs[(int)Math.floor(id / taskBlock_yoko)][(int)id % taskBlock_yoko];
         Task task = taskDao.findById(taskId);
         TextView text = findViewById(R.id.textView);
         text.setText(task.note);
+
+
     }
 }
