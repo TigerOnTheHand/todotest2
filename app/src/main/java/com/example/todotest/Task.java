@@ -25,6 +25,12 @@ public class Task {
     @ColumnInfo(name = "blockSize")
     public int blockSize;
 
+    @ColumnInfo(name = "color")
+    public String color;
+
+    @ColumnInfo(name = "sintyoku")
+    public int sintyoku;
+
     public Task(String name, String note, int year, int monthOfYear, int dayOfMonth, int blockSize) {
         this.name = name;
         this.note = note;

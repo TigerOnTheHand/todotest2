@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     int taskBlock_tate = 8,taskBlock_yoko = 7;
     int addtate = 10;
     int[][] taskBlockIDs = new int[taskBlock_tate + addtate][taskBlock_yoko];
+    View view;
+    int currentTaskID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,22 @@ public class MainActivity extends AppCompatActivity {
 
         // ブロック表示
         AsyncShowBlock();
+    }
+
+    public void GoToAddTask(View view) {
+        Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+        startActivity(intent);
+    }
+
+    public void GoToDoTask(View view) {
+        if (currentTaskID == -1) {
+            Toast.makeText(getApplicationContext() , "課題を選択してください", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(MainActivity.this, DoTaskActivity.class);
+        intent.putExtra("TASKID", currentTaskID);
+        startActivity(intent);
     }
 
     // ブロック表示非同期処理準備
@@ -77,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
             // tasksを期日が近い順に並べ替え
             tasks = SortInOrderOfDate(tasks);
+            for (Task task : tasks) {
+                Log.d("あああ", task.name);
+            }
 
             // tasks内のtaskをブロック状に積み上げる
             PileTaskID(tasks);
@@ -99,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             TextView text = findViewById(R.id.textView);
             String str = "";
-
+/*
             for (Task task : tasks) {
                 str += task.name + ",";
             }
@@ -112,14 +135,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 str += "\n";
             }
-
+*/
             text.setText(str);
         }
-    }
-
-    public void GoToAddTask(View view) {
-        Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
-        startActivity(intent);
     }
 
     // tasksを期日が近い順に並べ替え
@@ -143,14 +161,15 @@ public class MainActivity extends AppCompatActivity {
                         tasks.set(i + 1, w);
                         isChangedOrder = true;
                     }
-                }
-                else if(tasks.get(i).monthOfYear == tasks.get(i + 1).monthOfYear) {
-                    // 月が同じ→日を見て入れ替え
-                    if (tasks.get(i).dayOfMonth > tasks.get(i + 1).dayOfMonth) {
-                        Task w = tasks.get(i);
-                        tasks.set(i, tasks.get(i + 1));
-                        tasks.set(i + 1, w);
-                        isChangedOrder = true;
+                    else if(tasks.get(i).monthOfYear == tasks.get(i + 1).monthOfYear) {
+                        // 月が同じ→日を見て入れ替え
+                        if (tasks.get(i).dayOfMonth > tasks.get(i + 1).dayOfMonth) {
+                            Task w = tasks.get(i);
+                            tasks.set(i, tasks.get(i + 1));
+                            tasks.set(i + 1, w);
+
+                            isChangedOrder = true;
+                        }
                     }
                 }
             }
@@ -178,15 +197,6 @@ public class MainActivity extends AppCompatActivity {
 
             Task task = tasks.get(i);
 
-            // ブロックが入らない→xを右に詰める
-            if (block_x + (task.blockSize - 1) > taskBlock_yoko) {
-                block_x = 0;
-                // それでも入らないなら終了！
-                if (block_x + (task.blockSize - 1) > taskBlock_yoko) {
-                    break;
-                }
-            }
-
             // 仮のタスクブロックを作成
             int[][] taskBlock = new int[task.blockSize][task.blockSize];
             for (int j = 0; j < taskBlock.length; j++) {
@@ -197,10 +207,23 @@ public class MainActivity extends AppCompatActivity {
 
             // （あとからここにブロック削る処理？）
 
+
+
+            // ブロックが入らない→xを右に詰める
+            if (block_x + (task.blockSize - 1) > taskBlock_yoko - 1) {
+                block_x = 0;
+                // それでも入らないなら終了！
+                if (block_x + (task.blockSize - 1) > taskBlock_yoko - 1) {
+                    break;
+                }
+            }
+
             // しょっぱなから置けねえならもうなんも置けねえ→終了！
             if (!GetCanPutBlock(taskBlock, block_x, 0)) {
                 break;
             }
+
+
 
             // 上から置けるかどうか見ていく
             int block_y = 0;
@@ -263,31 +286,78 @@ public class MainActivity extends AppCompatActivity {
                 }
                 int btnId = getResources().getIdentifier("imageButton" + num, "id", getPackageName());
                 ImageButton btn = (ImageButton)findViewById(btnId);
-
+                btn.setEnabled(true);
                 // taskIDの取得
                 int id = taskBlockIDs[addtate + i][j];
                 // ボタンの表示・非表示
                 if (id == -1) {
-                    //btn.setVisibility(View.INVISIBLE);
                     btn.setEnabled(false);
+                    btn.setBackgroundColor(Color.GRAY);
                 }
                 else {
-                    //btn.setVisibility(View.VISIBLE);
                     btn.setEnabled(true);
+                    btn.setBackgroundResource(R.drawable.taskbutton);
                 }
             }
         }
     }
 
     public void OnTaskBlock(View view) {
-        String btnName = getResources().getResourceEntryName(view.getId());
+        this.view = view;
+        AsyncFind();
+    }
 
-        int id = Integer.getInteger(btnName.substring(btnName.length() - 2));
-        int taskId = taskBlockIDs[(int)Math.floor(id / taskBlock_yoko)][(int)id % taskBlock_yoko];
-        Task task = taskDao.findById(taskId);
-        TextView text = findViewById(R.id.textView);
-        text.setText(task.note);
+    // ブロック表示非同期処理準備
+    @UiThread
+    private void AsyncFind() {
+        Looper mainLooper = Looper.getMainLooper();
+        Handler handler = HandlerCompat.createAsync(mainLooper);
 
+        BackgroundFind backgroundFind = new BackgroundFind(handler);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(backgroundFind);
+    }
 
+    // ブロック表示非同期処理
+    private class BackgroundFind implements Runnable {
+        private final Handler _handler;
+
+        public BackgroundFind(Handler handler) {
+            _handler = handler;
+        }
+
+        @WorkerThread
+        @Override
+        public void run() {
+            String btnName = getResources().getResourceEntryName(view.getId());
+            String idstr = btnName.substring(btnName.length() - 2);
+
+            int id = Integer.valueOf(idstr) - 1;
+            int taskId = taskBlockIDs[(int)Math.floor(id / taskBlock_yoko) + addtate][(int)id % taskBlock_yoko];
+            if (taskId != -1) {
+                currentTaskID = taskId;
+                Task task = taskDao.findById(taskId);
+                TextView text = findViewById(R.id.textView);
+                String str = "課題名：" + task.name;
+                str += "\n" + "期限：" + task.year + "/" + task.monthOfYear + "/" + task.dayOfMonth + "まで";
+                str += "\n" + "説明：" + task.note;
+                text.setText(str);
+            }
+
+            FindPostExector FindPostExector = new FindPostExector();
+            _handler.post(FindPostExector);
+        }
+    }
+
+    // ブロック表示非同期処理終了後の処理
+    private class FindPostExector implements Runnable {
+
+        public FindPostExector() { }
+
+        @UiThread
+        @Override
+        public void run() {
+
+        }
     }
 }

@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +57,16 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
                 "/ " + String.valueOf(monthOfYear) +
                 "/ " + String.valueOf(dayOfMonth);
         txtDate.setText(date);
+
+        // あとまわしになってる
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.add("赤");
+        adapter.add("青");
+        adapter.add("緑");
+        adapter.add("O型");
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setAdapter(adapter);
     }
 
     // 課題追加ボタン
@@ -92,6 +105,8 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
             task.monthOfYear = monthOfYear;
             task.dayOfMonth = dayOfMonth;
             task.blockSize = Integer.parseInt(editTaskBlockSize.getText().toString());
+            Spinner spinner = (Spinner) findViewById(R.id.spinner);
+            task.color = (String) spinner.getSelectedItem();
 
             // データを追加
             _taskDao.insert(task);
