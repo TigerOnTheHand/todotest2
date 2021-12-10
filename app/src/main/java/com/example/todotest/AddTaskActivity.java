@@ -64,7 +64,9 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         adapter.add("赤");
         adapter.add("青");
         adapter.add("緑");
-        adapter.add("O型");
+        adapter.add("黄色");
+        adapter.add("ピンク");
+        adapter.add("オレンジ");
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
     }

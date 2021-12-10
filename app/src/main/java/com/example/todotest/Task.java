@@ -1,5 +1,7 @@
 package com.example.todotest;
 
+import android.icu.lang.UProperty;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -38,5 +40,9 @@ public class Task {
         this.monthOfYear = monthOfYear;
         this.dayOfMonth = dayOfMonth;
         this.blockSize = blockSize;
+    }
+
+    public int Id() {
+        return id;
     }
 }

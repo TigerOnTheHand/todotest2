@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     int taskBlock_tate = 8,taskBlock_yoko = 7;
     int addtate = 10;
     int[][] taskBlockIDs = new int[taskBlock_tate + addtate][taskBlock_yoko];
+    String[][] taskColors = new String[taskBlock_tate + addtate][taskBlock_yoko];
     View view;
     int currentTaskID = -1;
 
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
             // ボタンの表示・非表示、色の指定
             UpdateButton();
+            Log.d("aaa", "aaa");
 
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
             _handler.post(showBlockPostExector);
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
             }
 */
             text.setText(str);
+
         }
     }
 
@@ -188,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         for (int j = 0; j < taskBlockIDs.length; j++) {
             for (int k = 0; k < taskBlockIDs[j].length; k++) {
                 taskBlockIDs[j][k] = -1;
+                taskColors[j][k] = "";
             }
         }
 
@@ -235,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
             // 一個上なら置けるよね！
             block_y -= 1;
-            PutBlock(taskBlock, block_x, block_y, task.id);
+            PutBlock(taskBlock, block_x, block_y, task.id, task.color);
 
 
             block_x += task.blockSize;
@@ -264,11 +267,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @WorkerThread
-    private void PutBlock(int[][] taskBlock, int offset_x, int offset_y, int taskID) {
+    private void PutBlock(int[][] taskBlock, int offset_x, int offset_y, int id, String color) {
         for(int y = 0; y < taskBlock.length; y++) {
             for(int x = 0; x < taskBlock.length; x++) {
                 if (taskBlock[y][x] == 1) {
-                    taskBlockIDs[offset_y + y][offset_x + x] = taskID;
+                    taskBlockIDs[offset_y + y][offset_x + x] = id;
+                    taskColors[offset_y + y][offset_x + x] = color;
                 }
             }
         }
@@ -279,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
     private void UpdateButton() {
         for (int i = 0; i < taskBlock_tate; i++) {
             for (int j = 0; j < taskBlock_yoko; j++) {
+
                 // 文字列からリソースIDを取得
                 String num = String.valueOf(i * taskBlock_yoko + j + 1);
                 if (num.length() < 2) {
@@ -287,8 +292,11 @@ public class MainActivity extends AppCompatActivity {
                 int btnId = getResources().getIdentifier("imageButton" + num, "id", getPackageName());
                 ImageButton btn = (ImageButton)findViewById(btnId);
                 btn.setEnabled(true);
+
                 // taskIDの取得
+                String color = taskColors[addtate + i][j];
                 int id = taskBlockIDs[addtate + i][j];
+
                 // ボタンの表示・非表示
                 if (id == -1) {
                     btn.setEnabled(false);
@@ -296,7 +304,24 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     btn.setEnabled(true);
-                    btn.setBackgroundResource(R.drawable.taskbutton);
+                    if (color.equals("赤")) {
+                        btn.setBackgroundResource(R.drawable.taskbutton_red);
+                    }
+                    if (color.equals("青")) {
+                        btn.setBackgroundResource(R.drawable.taskbutton_blue);
+                    }
+                    if (color.equals("緑")) {
+                        btn.setBackgroundResource(R.drawable.taskbutton_green);
+                    }
+                    if (color.equals("黄色")) {
+                        btn.setBackgroundResource(R.drawable.taskbutton_yellow);
+                    }
+                    if (color.equals("ピンク")) {
+                        btn.setBackgroundResource(R.drawable.taskbutton_pink);
+                    }
+                    if (color.equals("オレンジ")) {
+                        btn.setBackgroundResource(R.drawable.taskbutton_orange);
+                    }
                 }
             }
         }
