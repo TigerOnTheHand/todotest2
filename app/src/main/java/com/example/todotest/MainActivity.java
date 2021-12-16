@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+・タスク追加してもブロック更新されない
+色適応のとこが怪しい
+ */
 public class MainActivity extends AppCompatActivity {
     List<Task> tasks;
     TaskDao taskDao;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     String[][] taskColors = new String[taskBlock_tate + addtate][taskBlock_yoko];
     View view;
     int currentTaskID = -1;
+    Task taskStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         tasks = new ArrayList<Task>();
         TextView textView = findViewById(R.id.textView);
         textView.setMovementMethod(new ScrollingMovementMethod());
+        taskStore = new Task("", "", 0, 0, 0, 0);
     }
 
     @Override
@@ -97,16 +103,19 @@ public class MainActivity extends AppCompatActivity {
 
             // tasksを期日が近い順に並べ替え
             tasks = SortInOrderOfDate(tasks);
+            /*
             for (Task task : tasks) {
                 Log.d("あああ", task.name);
             }
+
+             */
 
             // tasks内のtaskをブロック状に積み上げる
             PileTaskID(tasks);
 
             // ボタンの表示・非表示、色の指定
             UpdateButton();
-            Log.d("aaa", "aaa");
+            Log.d("end", "end");
 
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
             _handler.post(showBlockPostExector);
@@ -136,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 str += "\n";
             }
-*/
+
+ */
+
             text.setText(str);
 
         }
@@ -200,17 +211,15 @@ public class MainActivity extends AppCompatActivity {
 
             Task task = tasks.get(i);
 
-            // 仮のタスクブロックを作成
+            // 仮のタスクブロックを作成(進捗分まで）
             int[][] taskBlock = new int[task.blockSize][task.blockSize];
+            int blockNum = task.blockSize * task.blockSize - task.sintyoku;
             for (int j = 0; j < taskBlock.length; j++) {
                 for (int k = 0; k < taskBlock[j].length; k++) {
+                    if (j * task.blockSize + k + 1 > blockNum) { break; }
                     taskBlock[j][k] = 1;
                 }
             }
-
-            // （あとからここにブロック削る処理？）
-
-
 
             // ブロックが入らない→xを右に詰める
             if (block_x + (task.blockSize - 1) > taskBlock_yoko - 1) {
@@ -291,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 int btnId = getResources().getIdentifier("imageButton" + num, "id", getPackageName());
                 ImageButton btn = (ImageButton)findViewById(btnId);
-                btn.setEnabled(true);
+                //btn.setEnabled(true);
 
                 // taskIDの取得
                 String color = taskColors[addtate + i][j];
@@ -299,11 +308,13 @@ public class MainActivity extends AppCompatActivity {
 
                 // ボタンの表示・非表示
                 if (id == -1) {
-                    btn.setEnabled(false);
+                    // falseにするとなぜかうまく動作しない
+                    // まあ-1は押してもはじくから大丈夫でしょう
+                    //btn.setEnabled(false);
                     btn.setBackgroundColor(Color.GRAY);
                 }
                 else {
-                    btn.setEnabled(true);
+                    //btn.setEnabled(true);
                     if (color.equals("赤")) {
                         btn.setBackgroundResource(R.drawable.taskbutton_red);
                     }
@@ -323,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
                         btn.setBackgroundResource(R.drawable.taskbutton_orange);
                     }
                 }
+                Log.d(String.valueOf(id), String.valueOf(id));
             }
         }
     }
@@ -362,11 +374,27 @@ public class MainActivity extends AppCompatActivity {
             if (taskId != -1) {
                 currentTaskID = taskId;
                 Task task = taskDao.findById(taskId);
-                TextView text = findViewById(R.id.textView);
+                //TextView text = findViewById(R.id.textView);
+
+                // 無理やりコピー（直接ぶち込むとアドレスコピーで参照先消えちゃうから）
+                taskStore.name = task.name;
+                taskStore.note = task.note;
+                taskStore.year = task.year;
+                taskStore.monthOfYear = task.monthOfYear;
+                taskStore.dayOfMonth = task.dayOfMonth;
+                taskStore.blockSize = task.blockSize;
+                taskStore.color = task.color;
+                taskStore.sintyoku = task.sintyoku;
+
+                /*
                 String str = "課題名：" + task.name;
                 str += "\n" + "期限：" + task.year + "/" + task.monthOfYear + "/" + task.dayOfMonth + "まで";
                 str += "\n" + "説明：" + task.note;
-                text.setText(str);
+
+                 */
+                //Log.d("ppp", str);
+                //text.setText(""); // WorkerThread内でなぜかsetTextできない
+                //Log.d("uuu", "uuu");
             }
 
             FindPostExector FindPostExector = new FindPostExector();
@@ -382,7 +410,14 @@ public class MainActivity extends AppCompatActivity {
         @UiThread
         @Override
         public void run() {
+            if (taskStore.id != -1) {
+                String str = "課題名：" + taskStore.name;
+                str += "\n" + "期限：" + taskStore.year + "/" + taskStore.monthOfYear + "/" + taskStore.dayOfMonth + "まで";
+                str += "\n" + "説明：" + taskStore.note;
 
+                TextView text = findViewById(R.id.textView);
+                text.setText(str);
+            }
         }
     }
 }

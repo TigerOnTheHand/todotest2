@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="528dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="50dp"
         android:onClick="AddTask"
         android:text="@string/btnAddTask"
         android:textSize="30sp"
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         android:text="@string/txtTaskName"
         android:textSize="34sp"
         app:layout_constraintEnd_toStartOf="@+id/editTaskName"
@@ -136,9 +136,11 @@
         android:layout_marginTop="40dp"
         android:text="カラー"
         android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddTask"
         app:layout_constraintEnd_toStartOf="@+id/spinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTaskBlockSize" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTaskBlockSize"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editTaskBlockSize"
@@ -153,8 +155,9 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="@+id/txtTaskBlockSize2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

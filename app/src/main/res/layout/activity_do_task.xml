@@ -6,15 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".DoTaskActivity">
 
-    <TextView
-        android:id="@+id/txtTaskName2"
+    <Button
+        android:id="@+id/btnDoTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
-        android:text="削るブロック数を入力"
+        android:layout_marginBottom="60dp"
+        android:text="削る"
+        android:textSize="30sp"
+        android:onClick="DoTask"
+        app:layout_constraintBottom_toTopOf="@+id/btnBackToMenu2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnBackToMenu2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="664dp"
+        android:layout_marginEnd="287dp"
+        android:layout_marginBottom="19dp"
+        android:text="@string/btnBackToMenu"
+        android:textSize="20sp"
+        android:onClick="BackToMenuButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.152"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/txtTaskNameDo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="24dp"
+        android:text="完成ノート"
+        android:textAlignment="center"
         android:textSize="34sp"
-        app:layout_constraintEnd_toStartOf="@+id/editTaskName"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTaskName3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="課題はどれくらい進みましたか？\n進めた分ブロックを削りましょう"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTaskNameDo" />
+
+    <TextView
+        android:id="@+id/txtTaskSintyoku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="10/25個削る"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTaskName3" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="#ccc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTaskSintyoku" />
 </androidx.constraintlayout.widget.ConstraintLayout>

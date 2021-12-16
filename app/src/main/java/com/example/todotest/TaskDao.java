@@ -23,5 +23,8 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks")
     List<Task> getAll();
 
+    @Query("UPDATE tasks SET sintyoku = :sintyoku WHERE id = :id")
+    void updateSintyoku(int id, int sintyoku);
+
     // id指定しなくてよくね？
 }

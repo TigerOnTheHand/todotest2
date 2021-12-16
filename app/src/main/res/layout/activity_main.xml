@@ -10,12 +10,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:text="設定"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGoToDelete"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnGoToDelete"
@@ -37,34 +36,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="580dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="24dp"
         android:onClick="GoToAddTask"
         android:text="＋"
         android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnGoToDelete"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/btnGoToDelete" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="390dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/frame_style"
         android:inputType="textMultiLine"
         android:text="課題名：完成ノート\n期限：2021/11/29まで\n進行度：20%\nコメント：B Clearはやらなくてもいい"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/btnGoToAddTask"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -404,7 +399,7 @@
                 android:onClick="OnTaskBlock" />
 
             <ImageButton
-                android:id="@+id/imageButton33"
+                android:id="@+id/imageButton32"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="3dp"
@@ -413,7 +408,7 @@
                 android:onClick="OnTaskBlock" />
 
             <ImageButton
-                android:id="@+id/imageButton32"
+                android:id="@+id/imageButton33"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="3dp"

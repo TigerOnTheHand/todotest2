@@ -8,6 +8,6 @@
     <string name="txtTaskName">課題名</string>
     <string name="txtTaskNote">コメント</string>
     <string name="editTaskNote">コメント（任意）</string>
-    <string name="txtTaskBlockSize">ブロック数</string>
+    <string name="txtTaskBlockSize">ブロック数(一辺)</string>
     <string name="editTaskBlockSize">ブロック数を入力</string>
 </resources>
