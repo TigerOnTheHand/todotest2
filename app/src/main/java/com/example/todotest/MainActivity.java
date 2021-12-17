@@ -17,7 +17,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -212,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
             Task task = tasks.get(i);
 
             // 仮のタスクブロックを作成(進捗分まで）
+            /*
             int[][] taskBlock = new int[task.blockSize][task.blockSize];
             int blockNum = task.blockSize * task.blockSize - task.sintyoku;
             for (int j = 0; j < taskBlock.length; j++) {
@@ -220,6 +224,21 @@ public class MainActivity extends AppCompatActivity {
                     taskBlock[j][k] = 1;
                 }
             }
+
+             */
+            int[][] taskBlock = new int[task.blockSize][task.blockSize];
+            for (int j = 0; j < taskBlock.length; j++) {
+                for (int k = 0; k < taskBlock[j].length; k++) {
+                    taskBlock[j][k] = 1;
+                }
+            }
+            for (int j = 0; j < taskBlock.length; j++) {
+                for (int k = 0; k < taskBlock[j].length; k++) {
+                    if (j * task.blockSize + k + 1 > task.sintyoku) { break; }
+                    taskBlock[j][task.blockSize-1 - k] = -1;
+                }
+            }
+
 
             // ブロックが入らない→xを右に詰める
             if (block_x + (task.blockSize - 1) > taskBlock_yoko - 1) {
@@ -250,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             PutBlock(taskBlock, block_x, block_y, task.id, task.color);
 
 
-            block_x += task.blockSize;
+            block_x += task.blockSize - task.sintyoku % task.blockSize;
         }
     }
 
@@ -305,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                 // taskIDの取得
                 String color = taskColors[addtate + i][j];
                 int id = taskBlockIDs[addtate + i][j];
+                Task task = taskDao.findById(id);
 
                 // ボタンの表示・非表示
                 if (id == -1) {
@@ -312,6 +332,7 @@ public class MainActivity extends AppCompatActivity {
                     // まあ-1は押してもはじくから大丈夫でしょう
                     //btn.setEnabled(false);
                     btn.setBackgroundColor(Color.GRAY);
+                    btn.setAlpha(1f);
                 }
                 else {
                     //btn.setEnabled(true);
@@ -333,6 +354,28 @@ public class MainActivity extends AppCompatActivity {
                     if (color.equals("オレンジ")) {
                         btn.setBackgroundResource(R.drawable.taskbutton_orange);
                     }
+
+                    Calendar calendar1 = Calendar.getInstance();
+                    // Month 値は 0 から始まるので注意
+                    calendar1.set(task.year, task.monthOfYear - 1, task.dayOfMonth);
+
+                    // 1970/1/1 から設定した calendar1 のミリ秒
+                    long timeMillis1 = calendar1.getTimeInMillis();
+
+                    // 現在時刻のミリ秒
+                    long currentTimeMillis = System.currentTimeMillis();
+
+                    // 差分のミリ秒
+                    long diff = timeMillis1 - currentTimeMillis;
+
+                    // ミリ秒から秒→分→時→日へ変換
+                    diff = diff / (1000 * 60 * 60 * 24);
+
+                    float alpha = 1.0f - (float)diff / 15f;
+                    if (alpha > 1.0f) { alpha = 1.0f; }
+                    if (alpha < 0.1f) { alpha = 0.1f; }
+
+                    btn.setAlpha(alpha);
                 }
                 Log.d(String.valueOf(id), String.valueOf(id));
             }
@@ -371,12 +414,14 @@ public class MainActivity extends AppCompatActivity {
 
             int id = Integer.valueOf(idstr) - 1;
             int taskId = taskBlockIDs[(int)Math.floor(id / taskBlock_yoko) + addtate][(int)id % taskBlock_yoko];
+            taskStore.id = -1;
             if (taskId != -1) {
                 currentTaskID = taskId;
                 Task task = taskDao.findById(taskId);
                 //TextView text = findViewById(R.id.textView);
 
                 // 無理やりコピー（直接ぶち込むとアドレスコピーで参照先消えちゃうから）
+                taskStore.id = task.id;
                 taskStore.name = task.name;
                 taskStore.note = task.note;
                 taskStore.year = task.year;
