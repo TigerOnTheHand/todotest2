@@ -1,4 +1,4 @@
-package com.example.todotest;
+package com.kadaikenkyu.todotest;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

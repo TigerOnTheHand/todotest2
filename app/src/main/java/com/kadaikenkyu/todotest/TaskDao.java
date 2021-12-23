@@ -1,4 +1,4 @@
-package com.example.todotest;
+package com.kadaikenkyu.todotest;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

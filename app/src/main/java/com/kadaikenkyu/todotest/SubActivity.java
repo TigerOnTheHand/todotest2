@@ -1,4 +1,4 @@
-package com.example.todotest;
+package com.kadaikenkyu.todotest;
 
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
@@ -10,9 +10,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

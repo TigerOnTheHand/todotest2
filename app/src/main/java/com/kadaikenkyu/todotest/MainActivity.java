@@ -1,4 +1,4 @@
-package com.example.todotest;
+package com.kadaikenkyu.todotest;
 
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;

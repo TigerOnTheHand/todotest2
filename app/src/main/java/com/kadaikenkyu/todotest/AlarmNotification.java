@@ -1,4 +1,4 @@
-package com.example.todotest;
+package com.kadaikenkyu.todotest;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,9 +10,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.util.Log;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import static android.app.Notification.VISIBILITY_PUBLIC;
 

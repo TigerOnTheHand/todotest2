@@ -1,4 +1,4 @@
-package com.example.todotest;
+package com.kadaikenkyu.todotest;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

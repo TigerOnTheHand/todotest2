@@ -1,6 +1,4 @@
-package com.example.todotest;
-
-import android.icu.lang.UProperty;
+package com.kadaikenkyu.todotest;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
