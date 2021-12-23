@@ -5,7 +5,10 @@ import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,10 +20,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,15 +31,22 @@ import java.util.concurrent.Executors;
 色適応のとこが怪しい
  */
 public class MainActivity extends AppCompatActivity {
+
     List<Task> tasks;
     TaskDao taskDao;
     int taskBlock_tate = 8,taskBlock_yoko = 7;
     int addtate = 10;
     int[][] taskBlockIDs = new int[taskBlock_tate + addtate][taskBlock_yoko];
     String[][] taskColors = new String[taskBlock_tate + addtate][taskBlock_yoko];
-    View view;
+    float[][] taskDiffs = new float[taskBlock_tate + addtate][taskBlock_yoko];
+
+    View blockView; // 押されたブロックのView
     int currentTaskID = -1;
     Task taskStore;
+
+    private AlarmManager am;
+    private PendingIntent pending;
+    private int requestCode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,72 @@ public class MainActivity extends AppCompatActivity {
         AsyncShowBlock();
     }
 
+    // 通知を設定
+    private void SetAlart() {
+        if (pending != null && am != null) {
+            am.cancel(pending); // 通知をリセット
+        }
+
+        // 課題が無い、または通知オフならはじく
+        SharedPreferences data = getSharedPreferences(AlarmSettingActivity.DATA_ID, MODE_PRIVATE);
+        if (tasks.size() != 0 && data.getBoolean(AlarmSettingActivity.IS_ALARM_ON_ID, false)) {
+
+            // tasksを期日が近い順に並べ替え
+            tasks = SortInOrderOfDate(tasks);
+
+            // 今日に一番近い課題を取得
+            Task latestTask = tasks.get(0);
+            // 今日との日付の差がalarmDateSpan以上だったら課題を取得しない
+            int alarmDateSpan = data.getInt(AlarmSettingActivity.ALARM_DATE_SPAN_ID, 0);
+            Calendar today = Calendar.getInstance();
+            Calendar taskDay = Calendar.getInstance();
+            taskDay.set(latestTask.year, latestTask.monthOfYear - 1, latestTask.dayOfMonth);
+            int span = GetDiffDays(taskDay, today);
+            Log.d("ppp", String.valueOf(span));
+            if (span > alarmDateSpan) { return; }
+            // 指定日の課題を全て取得
+            List<Task> t = GetTasksWhereDate(latestTask.year, latestTask.monthOfYear, latestTask.dayOfMonth);
+
+            // 時刻を指定
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(latestTask.year, latestTask.monthOfYear - 1, latestTask.dayOfMonth);
+            calendar.set(Calendar.HOUR_OF_DAY, data.getInt(AlarmSettingActivity.ALARM_HOUROFDAY_ID, 0));
+            calendar.set(Calendar.MINUTE, data.getInt(AlarmSettingActivity.ALARM_MINUTE_ID, 0));
+            /*
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.SECOND, 3);
+             */
+
+            //設定した日時で発行するIntentを生成
+            Intent intent = new Intent(getApplicationContext(), AlarmNotification.class);
+            intent.putExtra("RequestCode", requestCode);
+            String message = latestTask.monthOfYear + "/" + latestTask.dayOfMonth + "までの課題があります：";
+            for (Task tas: t) {
+                message += tas.name + "、";
+            }
+            message = message.substring(0, message.length() - 1);
+            intent.putExtra("Message", message);
+            pending = PendingIntent.getBroadcast(getApplicationContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // 通知をセットする(通知間隔は一日ごとで設定)
+            am = (AlarmManager) getSystemService(ALARM_SERVICE);
+            // am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pending);
+            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pending);
+        }
+    }
+
+    // 二つの日付の日数の差を返す
+    private int GetDiffDays(Calendar calendar1, Calendar calendar2) {
+        //==== ミリ秒単位での差分算出 ====//
+        long diffTime = calendar1.getTimeInMillis() - calendar2.getTimeInMillis();
+
+        //==== 日単位に変換 ====//
+        int MILLIS_OF_DAY = 1000 * 60 * 60 * 24;
+        int diffDays = (int)(diffTime / MILLIS_OF_DAY);
+
+        return diffDays;
+    }
+
     public void GoToAddTask(View view) {
         Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
         startActivity(intent);
@@ -75,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, DoTaskActivity.class);
         intent.putExtra("TASKID", currentTaskID);
+        startActivity(intent);
+    }
+
+    public void GoToSettings(View view) {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
 
@@ -106,18 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
             // tasksを期日が近い順に並べ替え
             tasks = SortInOrderOfDate(tasks);
-            /*
-            for (Task task : tasks) {
-                Log.d("あああ", task.name);
-            }
-
-             */
 
             // tasks内のtaskをブロック状に積み上げる
             PileTaskID(tasks);
 
             // ボタンの表示・非表示、色の指定
-            UpdateButton();
+            //UpdateButton();
             Log.d("end", "end");
 
             ShowBlockPostExector showBlockPostExector = new ShowBlockPostExector();
@@ -133,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
         @UiThread
         @Override
         public void run() {
+            UpdateButton();
+
             TextView text = findViewById(R.id.textView);
             String str = "";
 /*
@@ -148,11 +223,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 str += "\n";
             }
-
  */
-
             text.setText(str);
 
+
+            // 通知
+            SetAlart();
         }
     }
 
@@ -205,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
             for (int k = 0; k < taskBlockIDs[j].length; k++) {
                 taskBlockIDs[j][k] = -1;
                 taskColors[j][k] = "";
+                taskDiffs[j][k] = 0;
             }
         }
 
@@ -239,12 +316,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-
-            // ブロックが入らない→xを右に詰める
-            if (block_x + (task.blockSize - 1) > taskBlock_yoko - 1) {
+            int size = task.blockSize;
+            if (task.blockSize * task.blockSize - task.sintyoku < task.blockSize) {
+                size = task.blockSize * task.blockSize - task.sintyoku;
+            }
+            // ブロックが入らない→xを左に詰める
+            if (block_x + (size - 1) > taskBlock_yoko - 1) {
                 block_x = 0;
                 // それでも入らないなら終了！
-                if (block_x + (task.blockSize - 1) > taskBlock_yoko - 1) {
+                if (block_x + (size - 1) > taskBlock_yoko - 1) {
                     break;
                 }
             }
@@ -253,7 +333,6 @@ public class MainActivity extends AppCompatActivity {
             if (!GetCanPutBlock(taskBlock, block_x, 0)) {
                 break;
             }
-
 
 
             // 上から置けるかどうか見ていく
@@ -266,7 +345,24 @@ public class MainActivity extends AppCompatActivity {
 
             // 一個上なら置けるよね！
             block_y -= 1;
-            PutBlock(taskBlock, block_x, block_y, task.id, task.color);
+
+            // ついでにdiffをWorkerThread内で計算しときたい...
+            Calendar calendar1 = Calendar.getInstance();
+            // Month 値は 0 から始まるので注意
+            calendar1.set(task.year, task.monthOfYear - 1, task.dayOfMonth);
+
+            // 1970/1/1 から設定した calendar1 のミリ秒
+            long timeMillis1 = calendar1.getTimeInMillis();
+
+            // 現在時刻のミリ秒
+            long currentTimeMillis = System.currentTimeMillis();
+
+            // 差分のミリ秒
+            long diff = timeMillis1 - currentTimeMillis;
+
+            // ミリ秒から秒→分→時→日へ変換
+            diff = diff / (1000 * 60 * 60 * 24);
+            PutBlock(taskBlock, block_x, block_y, task.id, task.color, (float)diff);
 
 
             block_x += task.blockSize - task.sintyoku % task.blockSize;
@@ -295,19 +391,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @WorkerThread
-    private void PutBlock(int[][] taskBlock, int offset_x, int offset_y, int id, String color) {
+    private void PutBlock(int[][] taskBlock, int offset_x, int offset_y, int id, String color, float diff) {
         for(int y = 0; y < taskBlock.length; y++) {
             for(int x = 0; x < taskBlock.length; x++) {
                 if (taskBlock[y][x] == 1) {
                     taskBlockIDs[offset_y + y][offset_x + x] = id;
                     taskColors[offset_y + y][offset_x + x] = color;
+                    taskDiffs[offset_y + y][offset_x + x] = diff;
                 }
             }
         }
     }
 
     // ボタンの表示・非表示、色の指定
-    @WorkerThread
+    //@WorkerThread
     private void UpdateButton() {
         for (int i = 0; i < taskBlock_tate; i++) {
             for (int j = 0; j < taskBlock_yoko; j++) {
@@ -324,7 +421,6 @@ public class MainActivity extends AppCompatActivity {
                 // taskIDの取得
                 String color = taskColors[addtate + i][j];
                 int id = taskBlockIDs[addtate + i][j];
-                Task task = taskDao.findById(id);
 
                 // ボタンの表示・非表示
                 if (id == -1) {
@@ -336,6 +432,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     //btn.setEnabled(true);
+
                     if (color.equals("赤")) {
                         btn.setBackgroundResource(R.drawable.taskbutton_red);
                     }
@@ -355,35 +452,25 @@ public class MainActivity extends AppCompatActivity {
                         btn.setBackgroundResource(R.drawable.taskbutton_orange);
                     }
 
-                    Calendar calendar1 = Calendar.getInstance();
-                    // Month 値は 0 から始まるので注意
-                    calendar1.set(task.year, task.monthOfYear - 1, task.dayOfMonth);
+                    Log.d(String.valueOf(id), "taskname:");
+                    //Task task = taskDao.findById(id);
+                    //Log.d(String.valueOf(id), String.valueOf(task.name));
 
-                    // 1970/1/1 から設定した calendar1 のミリ秒
-                    long timeMillis1 = calendar1.getTimeInMillis();
-
-                    // 現在時刻のミリ秒
-                    long currentTimeMillis = System.currentTimeMillis();
-
-                    // 差分のミリ秒
-                    long diff = timeMillis1 - currentTimeMillis;
-
-                    // ミリ秒から秒→分→時→日へ変換
-                    diff = diff / (1000 * 60 * 60 * 24);
-
-                    float alpha = 1.0f - (float)diff / 15f;
+                    float diff = taskDiffs[addtate + i][j];
+                    float alpha = 1.0f - (float)(Math.sqrt(diff) / 	7.745966692);
                     if (alpha > 1.0f) { alpha = 1.0f; }
-                    if (alpha < 0.1f) { alpha = 0.1f; }
+                    if (alpha < 0.2f) { alpha = 0.2f; }
 
                     btn.setAlpha(alpha);
                 }
-                Log.d(String.valueOf(id), String.valueOf(id));
+
+                Log.d(String.valueOf(i * taskBlock_yoko + j + 1), String.valueOf(id));
             }
         }
     }
 
     public void OnTaskBlock(View view) {
-        this.view = view;
+        this.blockView = view;
         AsyncFind();
     }
 
@@ -409,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
         @WorkerThread
         @Override
         public void run() {
-            String btnName = getResources().getResourceEntryName(view.getId());
+            String btnName = getResources().getResourceEntryName(blockView.getId());
             String idstr = btnName.substring(btnName.length() - 2);
 
             int id = Integer.valueOf(idstr) - 1;
@@ -457,6 +544,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (taskStore.id != -1) {
                 String str = "課題名：" + taskStore.name;
+                str += "\n" + "進捗：" + taskStore.sintyoku + "/" + taskStore.blockSize * taskStore.blockSize + "個";
                 str += "\n" + "期限：" + taskStore.year + "/" + taskStore.monthOfYear + "/" + taskStore.dayOfMonth + "まで";
                 str += "\n" + "説明：" + taskStore.note;
 
@@ -464,5 +552,18 @@ public class MainActivity extends AppCompatActivity {
                 text.setText(str);
             }
         }
+    }
+
+    // 日付で課題を取得
+    private List<Task> GetTasksWhereDate(int year, int monthOfYear, int dayOfMonth) {
+        List<Task> ta = new ArrayList<Task>();
+
+        for (Task task: tasks) {
+            if (task.year == year && task.monthOfYear == monthOfYear && task.dayOfMonth == dayOfMonth) {
+                ta.add(task);
+            }
+        }
+
+        return ta;
     }
 }

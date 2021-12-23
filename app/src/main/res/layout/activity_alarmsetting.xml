@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlarmSettingActivity">
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="70dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/txtTaskName5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtTaskName5" />
+
+    <EditText
+        android:id="@+id/editAlarmDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/hint"
+        android:ems="2"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtTaskName2"
+        app:layout_constraintEnd_toStartOf="@+id/txtTaskName4"
+        app:layout_constraintStart_toEndOf="@+id/txtTaskName2"
+        app:layout_constraintTop_toTopOf="@+id/txtTaskName2" />
+
+    <TextView
+        android:id="@+id/txtTaskName2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
+        android:text="課題のお知らせ："
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/editTaskName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTaskName5" />
+
+    <TextView
+        android:id="@+id/txtAlartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:text="通知時刻：18:40"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/editTaskName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTaskName2" />
+
+    <TextView
+        android:id="@+id/txtTaskName5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:text="通知："
+        android:textAlignment="viewStart"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/spinner2"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTaskName4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="日前から"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtTaskName2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtTaskName2" />
+
+    <Button
+        android:id="@+id/btnBackToMenu3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="664dp"
+        android:layout_marginEnd="287dp"
+        android:layout_marginBottom="19dp"
+        android:text="@string/btnBackToSettings"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.152"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/btnTestAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="通知テスト"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnBackToMenu3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSetAlartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="変更する"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtAlartTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.911"
+        app:layout_constraintStart_toEndOf="@+id/txtAlartTime"
+        app:layout_constraintTop_toTopOf="@+id/txtAlartTime" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

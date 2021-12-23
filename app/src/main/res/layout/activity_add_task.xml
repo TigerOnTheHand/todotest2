@@ -14,15 +14,15 @@
         android:layout_marginTop="664dp"
         android:layout_marginEnd="287dp"
         android:layout_marginBottom="19dp"
-        android:text="@string/btnBackToMenu"
+        android:onClick="BackToMenuButton"
+        android:text="@string/btnBackToHome"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.152"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        android:onClick="BackToMenuButton" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btnAddTask"
@@ -142,10 +142,23 @@
         app:layout_constraintTop_toBottomOf="@+id/txtTaskBlockSize"
         app:layout_constraintVertical_bias="0.0" />
 
+    <TextView
+        android:id="@+id/txtTaskAlart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="※ここに注意文"
+        android:textColor="#E91E63"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddTask"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/editTaskBlockSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:ems="3"
         android:inputType="number"
         android:textSize="20sp"

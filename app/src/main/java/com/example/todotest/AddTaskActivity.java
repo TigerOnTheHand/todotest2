@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +31,7 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
     TextView txtDate;
     EditText editTaskName, editTaskNote, editTaskBlockSize;
     int year, monthOfYear, dayOfMonth;
+    TextView txtAlart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
         editTaskName = findViewById(R.id.editTaskName);
         editTaskNote = findViewById(R.id.editTaskNote);
         editTaskBlockSize = findViewById(R.id.editTaskBlockSize);
+        txtAlart = findViewById(R.id.txtTaskAlart);
+        txtAlart.setText("");
 
         //今日の日付を取得(日本のタイムゾーン)
         Calendar todayDateCalendar =
@@ -73,6 +77,47 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
 
     // 課題追加ボタン
     public void AddTask(View view) {
+        Log.d("rrr", "pushed");
+        // 今日より前の課題ははじく
+        boolean isOlder = false;
+        Calendar today = Calendar.getInstance();
+        // 年を見て入れ替え
+        if (year < today.get(Calendar.YEAR)) {
+            isOlder = true;
+        }
+        else if(year == today.get(Calendar.YEAR)) {
+            // 年が同じ→月を見て入れ替え
+            if (monthOfYear < today.get(Calendar.MONTH) + 1) {
+                isOlder = true;
+            }
+            else if(monthOfYear == today.get(Calendar.MONTH) + 1) {
+                // 月が同じ→日を見て入れ替え
+                if (dayOfMonth < today.get(Calendar.DATE)) {
+                    isOlder = true;
+                }
+            }
+        }
+
+        if (isOlder) {
+            Log.d("rrr", "a");
+            txtAlart.setText("今日以前の課題は追加できません");
+            return;
+        }
+
+        if (editTaskName.getText().toString().equals("")) {
+            Log.d("rrr", editTaskName.getText().toString());
+            txtAlart.setText("課題名を入力してください");
+            return;
+        }
+        if (editTaskBlockSize.getText().toString().equals("")) {
+            txtAlart.setText("ブロック数を入力してください");
+            return;
+        }
+        if (Integer.parseInt(editTaskBlockSize.getText().toString()) <= 0) {
+            txtAlart.setText("ブロック数は1以上にしてください");
+            return;
+        }
+
         AppDatabase db = AppDatabaseSingleton.getInstance(getApplicationContext());
         AsyncAddTask(db.taskDao());
     }
@@ -106,10 +151,9 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
             task.year = year;
             task.monthOfYear = monthOfYear;
             task.dayOfMonth = dayOfMonth;
-            task.blockSize = Integer.parseInt(editTaskBlockSize.getText().toString());
+            task.blockSize = Integer.parseInt(editTaskBlockSize.getText().toString()); // ここ空白だとエラー吐いて次に進まない
             Spinner spinner = (Spinner) findViewById(R.id.spinner);
             task.color = (String) spinner.getSelectedItem();
-
             // データを追加
             _taskDao.insert(task);
 

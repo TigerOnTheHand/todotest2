@@ -161,6 +161,7 @@ public class DoTaskActivity extends AppCompatActivity {
         @UiThread
         @Override
         public void run() {
+            Toast.makeText(getApplicationContext() , task.sintyoku + "個ブロックを削った！", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
